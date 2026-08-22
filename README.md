@@ -1,28 +1,38 @@
 # 📊 Análise de Vendas de E-commerce e Modelagem Relacional (PostgreSQL)
 
-Projeto prático desenvolvido para demonstrar modelagem relacional, integridade referencial e consultas analíticas avançadas em SQL.
+Projeto prático de análise de dados e engenharia de consultas SQL, focado em modelagem relacional, integridade referencial, relatórios gerenciais e auditoria cadastral de ponta a ponta.
 
-## 🎯 Objetivo
-Analisar dados transacionais de um e-commerce estruturado em modelo relacional (Chave Primária e Chave Estrangeira) para responder perguntas de negócio sobre:
-- Faturamento e frequência de compra por cliente (LTV).
-- Desempenho de vendas e ticket médio por região geográfica.
-- Categorias de maior impacto financeiro e volume de vendas.
-- Monitoramento de perdas por pedidos cancelados por estado.
+---
 
-## 🛠️ Tecnologias Utilizadas
-- **PostgreSQL (pgAdmin 4 / VS Code)**
-- **SQL (DQL, DDL, DML)**: `INNER JOIN`, `GROUP BY`, `HAVING`, `SUM`, `COUNT`, `AVG`, `ROUND`.
+## 🎯 Objetivo de Negócio
+Simular um ambiente real de e-commerce estruturado sob arquitetura relacional para extrair métricas estratégicas de performance comercial e integridade de base:
+- Faturamento consolidado, volume transacional e ticket médio por cliente e estado.
+- Performance de receita e volume por categoria de produto.
+- Monitoramento e impacto financeiro de pedidos cancelados.
+- Auditoria de base cadastral: identificação de clientes inativos (anti-join), taxa de ativação regional e tratamento rigoroso de valores nulos.
 
-## 🗄️ Estrutura do Banco de Dados
-- **`clientes`**: Tabela dimensão contendo dados cadastrais e geográficos (`id_cliente` [PK], `nome`, `cidade`, `estado`).
-- **`pedidos`**: Tabela fato contendo transações financeiras (`id_pedido` [PK], `id_cliente` [FK], `categoria`, `valor`, `status`, `data_pedido`).
+---
 
-## 📈 Principais Descobertas (Insights)
-1. **Concentração de Receita:** Clientes dos estados do Sul e Sudeste concentraram o maior faturamento total e ticket médio por compra.
-2. **Desempenho por Categoria:** A categoria 'Eletrônicos' manteve liderança em faturamento, mesmo com volume equilibrado em relação a 'Roupas' e 'Livros'.
-3. **Eficiência Operacional:** O volume de cancelamentos permaneceu concentrado em categorias de maior valor unitário, indicando oportunidade de melhoria nos meios de pagamento.
+## 🛠️ Tecnologias e Conceitos Aplicados
+- **SGBD & Ambiente:** PostgreSQL, VS Code, Git e GitHub.
+- **DDL & DML:** Modelagem de tabelas, tipos de dados (`DECIMAL`, `DATE`, `VARCHAR`), constraints (`PRIMARY KEY`, `FOREIGN KEY`, `NOT NULL`).
+- **DQL & Análise Relacional:**
+  - Junções: `INNER JOIN`, `LEFT JOIN`, Anti-Joins (`IS NULL`), predicados na cláusula `ON`.
+  - Agregações & Filtros: `GROUP BY`, `HAVING`, `COUNT(DISTINCT)`, `SUM`, `AVG`, `ROUND`.
+  - Tratamento de Dados: `COALESCE` para substituição de valores `NULL` em relatórios gerenciais.
 
-## 🚀 Como Executar
-1. Execute o script `01_schema_e_dados.sql` para criar as tabelas relacionais e popular os 20 registros.
-2. Execute `02_consultas_analiticas.sql` para verificar as consultas básicas de agregação.
-3. Execute `03_analises_relacionais_join.sql` para extrair os relatórios com junção de tabelas.
+---
+
+## 🗄️ Modelagem Relacional (Schema)
+
+```text
++-------------------+              +----------------------+
+|     CLIENTES      |              |       PEDIDOS        |
++-------------------+              +----------------------+
+| id_cliente (PK)   | 1 -------- < N | id_pedido (PK)       |
+| nome              |              | id_cliente (FK)      |
+| cidade            |              | categoria            |
+| estado            |              | valor                |
+|                   |              | status               |
+|                   |              | data_pedido          |
++-------------------+              +----------------------+

@@ -20,11 +20,11 @@ GROUP BY status;
 
 
 -- 4. Clientes VIPs (Gasto total acima de R$ 1.000 em pedidos pagos)
-SELECT cliente,
+SELECT id_cliente,
     SUM(valor) AS valor_gasto
 FROM pedidos
 WHERE status = 'pago'
-GROUP BY cliente
+GROUP BY id_cliente
 HAVING SUM(valor) > 1000
 ORDER BY valor_gasto DESC;
 

@@ -20,7 +20,7 @@ CREATE TABLE pedidos (
     FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
 );
 
--- 3. Inserção de Clientes
+-- 3. Inserção de Clientes (Incluindo clientes 9 e 10 sem pedidos para testes de integridade/auditoria)
 INSERT INTO clientes (id_cliente, nome, cidade, estado) VALUES
 (1, 'Ana Silva', 'São Paulo', 'SP'),
 (2, 'Bruno Costa', 'Rio de Janeiro', 'RJ'),
@@ -29,7 +29,9 @@ INSERT INTO clientes (id_cliente, nome, cidade, estado) VALUES
 (5, 'Elena Souza', 'Recife', 'PE'),
 (6, 'Fabio Lima', 'Fortaleza', 'CE'),
 (7, 'Gabi Martins', 'Salvador', 'BA'),
-(8, 'Helena Ramos', 'Porto Alegre', 'RS');
+(8, 'Helena Ramos', 'Porto Alegre', 'RS'),
+(9, 'Igor Mendes', 'Manaus', 'AM'),
+(10, 'Julia Freitas', 'Goiânia', 'GO');
 
 -- 4. Inserção de Pedidos
 INSERT INTO pedidos (id_pedido, id_cliente, categoria, valor, status, data_pedido) VALUES

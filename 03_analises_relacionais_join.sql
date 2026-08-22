@@ -13,7 +13,7 @@ SELECT
 FROM pedidos p
 JOIN clientes c ON p.id_cliente = c.id_cliente
 WHERE p.status = 'pago'
-GROUP BY c.nome, c.cidade
+GROUP BY c.id_cliente, c.nome, c.cidade
 ORDER BY faturamento_total DESC;
 
 
@@ -27,7 +27,7 @@ FROM pedidos p
 INNER JOIN clientes c ON p.id_cliente = c.id_cliente
 WHERE p.status = 'pago'
 GROUP BY c.estado
-ORDER BY faturamento_totaly DESC;
+ORDER BY faturamento_total DESC;
 
 
 -- 3. Categorias de alta demanda com filtro de faturamento mínimo (HAVING)
@@ -38,7 +38,7 @@ SELECT
 FROM pedidos
 WHERE status = 'pago'
 GROUP BY categoria
-HAVING COUNT(id_pedido) >= 3 and SUM(valor) > 400
+HAVING COUNT(id_pedido) >= 3 AND SUM(valor) > 400
 ORDER BY faturamento_total DESC;
 
 
