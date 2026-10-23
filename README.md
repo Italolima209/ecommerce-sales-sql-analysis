@@ -15,6 +15,8 @@ Simular um ambiente real de e-commerce estruturado sob arquitetura relacional pa
 ---
 
 ## 🛠️ Tecnologias e Conceitos Aplicados
+- **Linguagens & Ecossistema:** Python, SQL (PostgreSQL).
+- **Bibliotecas Python:** `pandas` (manipulação e agregações), `psycopg` (conexão segura), `python-dotenv` (gestão de variáveis de ambiente), `openpyxl` (motor para Excel).
 - **SGBD & Ferramentas:** PostgreSQL, VS Code, Git e GitHub.
 - **DDL & DML:** Modelagem de tabelas, tipos de dados (`DECIMAL`, `DATE`, `VARCHAR`), constraints (`PRIMARY KEY`, `FOREIGN KEY`, `NOT NULL`).
 - **DQL & Análise Relacional:**
@@ -32,7 +34,7 @@ Simular um ambiente real de e-commerce estruturado sob arquitetura relacional pa
 
 ```text
 +-------------------+              +----------------------+
-|     CLIENTES      |              |       PEDIDOS        |
+|     CLIENTES      |              |        PEDIDOS       |
 +-------------------+              +----------------------+
 | id_cliente (PK)   | 1 -------- < N | id_pedido (PK)     |
 | nome              |              | id_cliente (FK)      |
@@ -41,3 +43,11 @@ Simular um ambiente real de e-commerce estruturado sob arquitetura relacional pa
 |                   |              | status               |
 |                   |              | data_pedido          |
 +-------------------+              +----------------------+
+
+---
+
+## 📈 Relatório Automatizado (Python + Excel)
+
+O sistema conta com um script automatizado (`src/exportar_excel.py`) que conecta ao PostgreSQL de forma segura (utilizando variáveis de ambiente e gestão de contexto `with`), processa os dados com agregações profissionais do Pandas (`groupby` e `.agg`) e exporta o resumo comercial diretamente para uma folha de cálculo formatada.
+
+![Relatório de Vendas por Categoria](docs/relatorio_vendas.png)
