@@ -43,7 +43,7 @@ Simular um ambiente real de e-commerce estruturado sob arquitetura relacional pa
 |                   |              | status               |
 |                   |              | data_pedido          |
 +-------------------+              +----------------------+
-
+```
 ---
 
 ## 📈 Relatório Automatizado (Python + Excel)
