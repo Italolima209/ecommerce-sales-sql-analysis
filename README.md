@@ -36,7 +36,7 @@ Simular um ambiente real de e-commerce estruturado sob arquitetura relacional pa
 +-------------------+              +----------------------+
 |     CLIENTES      |              |        PEDIDOS       |
 +-------------------+              +----------------------+
-| id_cliente (PK)   | 1 -------- < N | id_pedido (PK)     |
+| id_cliente (PK)   | 1 ------ < N | id_pedido (PK)       |
 | nome              |              | id_cliente (FK)      |
 | cidade            |              | categoria            |
 | estado            |              | valor                |
@@ -51,3 +51,14 @@ Simular um ambiente real de e-commerce estruturado sob arquitetura relacional pa
 O sistema conta com um script automatizado (`src/exportar_excel.py`) que conecta ao PostgreSQL de forma segura (utilizando variáveis de ambiente e gestão de contexto `with`), processa os dados com agregações profissionais do Pandas (`groupby` e `.agg`) e exporta o resumo comercial diretamente para uma folha de cálculo formatada.
 
 ![Relatório de Vendas por Categoria](docs/relatorio_vendas.png)
+
+
+## Dashboard Interativo (Power BI)
+
+Foi desenvolvido um dashboard interativo no Power BI Desktop conectado ao banco de dados PostgreSQL para visualização dos principais indicadores de negócio:
+
+- **Métricas e KPIs:** Total de Pedidos, Total de Faturamento e Taxa de Cancelamento.
+- **Análises:** Distribuição de faturamento por categoria, status dos pedidos e evolução temporal mensal das vendas.
+- **Filtros:** Segmentação interativa por estado do cliente.
+
+![Dashboard Power BI](docs/dashboard_powerbi.png)
