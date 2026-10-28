@@ -216,19 +216,64 @@ for _ in range(pedidos_restantes):
 # Embaralha a ordem dos pedidos para que não fiquem cronologicamente ordenados por cliente
 random.shuffle(pedidos_brutos)
 
-# PASSO C: Montar os itens para cada pedido gerado
+# PASSO C: Gerar os itens de cada pedido com seleção ponderada por categoria
+
+pesos_categorias = {
+    "Eletrônicos": 8,
+    "Roupas": 20,
+    "Acessórios": 12,
+    "Livros": 18,
+    "Casa": 12,
+}
+
 pedidos = []
 
 for email_cliente, email_vendedor, data_pedido, status in pedidos_brutos:
-    produtos_escolhidos = random.sample(
-        produtos,
-        k=random.randint(1, 4),
-    )
+
+    # Cada pedido terá entre 1 e 4 produtos diferentes.
+    produtos_disponiveis = produtos.copy()
+    quantidade_tipos = random.randint(1, 4)
 
     itens_do_pedido = []
 
-    for nome_produto, categoria, preco_atual in produtos_escolhidos:
+    for _ in range(quantidade_tipos):
+
+        # Considera somente categorias que ainda possuem produtos disponíveis.
+        categorias_disponiveis = [
+            categoria
+            for categoria in pesos_categorias
+            if any(
+                produto[1] == categoria
+                for produto in produtos_disponiveis
+            )
+        ]
+
+        pesos_disponiveis = [
+            pesos_categorias[categoria]
+            for categoria in categorias_disponiveis
+        ]
+
+        # Sorteia a categoria de acordo com seus pesos.
+        categoria_escolhida = random.choices(
+            categorias_disponiveis,
+            weights=pesos_disponiveis,
+            k=1,
+        )[0]
+
+        # Sorteia um produto dentro da categoria escolhida.
+        candidatos = [
+            produto
+            for produto in produtos_disponiveis
+            if produto[1] == categoria_escolhida
+        ]
+
+        produto_escolhido = random.choice(candidatos)
+        produtos_disponiveis.remove(produto_escolhido)
+
+        nome_produto, categoria, preco_atual = produto_escolhido
+
         quantidade = random.randint(1, 4)
+
         preco_unitario = round(
             preco_atual * random.uniform(0.90, 1.10),
             2,
