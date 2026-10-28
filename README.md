@@ -30,6 +30,87 @@ Simular um ambiente real de e-commerce estruturado sob arquitetura relacional pa
 
 ---
 
+## ⚙️ Instalação e execução
+
+### Pré-requisitos
+
+- PostgreSQL
+- Python 3
+- Git
+- Visual Studio Code
+
+### 1. Clonar o repositório
+
+```bash
+git clone https://github.com/Italolima209/ecommerce-sales-sql-analysis.git
+cd ecommerce-sales-sql-analysis
+```
+
+### 2. Configurar o ambiente Python
+
+Crie e ative um ambiente virtual:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+Instale as dependências:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+### 3. Configurar as credenciais do banco de dados
+
+Crie um arquivo `.env` na raiz do projeto com as configurações da sua conexão PostgreSQL:
+
+```dotenv
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=nome_do_banco
+DB_USER=seu_usuario
+DB_PASSWORD=sua_senha
+```
+
+Substitua os valores de exemplo pelas configurações do banco local. O arquivo `.env` não deve ser enviado ao repositório.
+
+### 4. Preparar o banco de dados
+
+Com o PostgreSQL em execução e uma conexão configurada no VS Code, execute os scripts SQL na ordem numérica:
+
+1. `sql/01_schema_e_dados.sql`
+2. `sql/02_consultas_analiticas.sql`
+3. `sql/03_analises_relacionais_join.sql`
+4. `sql/04_auditoria_joins_avancados.sql`
+5. `sql/05_analises_avancadas_negocio.sql`
+
+O primeiro script cria a estrutura e insere os dados de teste. Os demais realizam as consultas e análises de negócio.
+
+### 5. Testar a conexão com o banco
+
+Com o ambiente virtual ativado, execute:
+
+```bash
+python src/conexao_banco.py
+```
+
+### 6. Executar as análises em Python
+
+```bash
+python src/analise_vendas.py
+```
+
+### 7. Exportar os resultados para Excel
+
+```bash
+python src/exportar_excel.py
+```
+
+O arquivo Excel é gerado conforme o caminho definido no script de exportação.
+
+---
+
 ## 🗄️ Modelagem Relacional (Schema)
 
 ```text
