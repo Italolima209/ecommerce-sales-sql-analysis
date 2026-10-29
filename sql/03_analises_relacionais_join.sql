@@ -1,55 +1,54 @@
--- ============================================================================
--- PROJETO: Análise de Vendas de E-commerce
--- ARQUIVO: 03_analises_relacionais_join.sql
--- OBJETIVO: Consultas analíticas relacionais utilizando INNER JOIN, Agregações e HAVING
--- ============================================================================
+-- =========================================================
+-- Projeto: Análise de Vendas de E-commerce
+-- Arquivo: 03_analises_relacionais_join.sql
+-- Banco: PostgreSQL
+-- Objetivo: Analisar o desempenho e comportamento por dimensões (Clientes, Vendedores e Região)
+-- =========================================================
 
--- 1. Faturamento total e volume de compras por cliente (apenas pedidos pagos)
+
+-- 1. Top 10 clientes por faturamento e quantidade de pedidos pagos
 SELECT
+    c.id_cliente,
     c.nome,
-    c.cidade,
-    COUNT(p.id_pedido) AS pedidos_pagos,
-    SUM(p.valor) AS faturamento_total
-FROM pedidos p
-JOIN clientes c ON p.id_cliente = c.id_cliente
-WHERE p.status = 'pago'
-GROUP BY c.id_cliente, c.nome, c.cidade
-ORDER BY faturamento_total DESC;
+    SUM(ip.quantidade * ip.preco_unitario) AS faturamento,
+    COUNT(DISTINCT ped.id_pedido) AS pedidos_pagos
+FROM clientes c
+INNER JOIN pedidos ped
+    ON c.id_cliente = ped.id_cliente
+INNER JOIN itens_pedido ip
+    ON ped.id_pedido = ip.id_pedido
+WHERE ped.status = 'pago'
+GROUP BY c.id_cliente, c.nome
+ORDER BY faturamento DESC, c.nome ASC
+LIMIT 10;
 
 
--- 2. Análise de desempenho regional: Volume, Faturamento e Ticket Médio por Estado
-SELECT 
-    c.estado,
-    COUNT(p.id_pedido) AS pedidos_pagos,
-    SUM(p.valor) AS faturamento_total,
-    ROUND(AVG(p.valor), 2) AS ticket_medio
-FROM pedidos p
-INNER JOIN clientes c ON p.id_cliente = c.id_cliente
-WHERE p.status = 'pago'
-GROUP BY c.estado
-ORDER BY faturamento_total DESC;
+-- 2. Desempenho dos vendedores por faturamento e quantidade de pedidos
+SELECT
+    v.id_vendedor,
+    v.nome,
+    SUM(ip.quantidade * ip.preco_unitario) AS faturamento_vendedor,
+    COUNT(DISTINCT ped.id_pedido) AS pedidos_vendedor
+FROM vendedores v
+INNER JOIN pedidos ped
+    ON v.id_vendedor = ped.id_vendedor
+INNER JOIN itens_pedido ip
+    ON ped.id_pedido = ip.id_pedido
+WHERE ped.status = 'pago'
+GROUP BY v.id_vendedor, v.nome
+ORDER BY faturamento_vendedor DESC, v.nome ASC;
 
 
--- 3. Categorias de alta demanda com filtro de faturamento mínimo (HAVING)
-SELECT 
-    categoria,
-    COUNT(id_pedido) AS pedidos_pagos,
-    SUM(valor) AS faturamento_total
-FROM pedidos
-WHERE status = 'pago'
-GROUP BY categoria
-HAVING COUNT(id_pedido) >= 3 AND SUM(valor) > 400
-ORDER BY faturamento_total DESC;
-
-
--- 4. Monitoramento de perdas: Análise de pedidos pagos vs cancelados por Estado
+-- 3. Distribuição geográfica (faturamento e volume de pedidos por estado/UF do cliente)
 SELECT
     c.estado,
-    p.status,
-    COUNT(p.id_pedido) AS total_pedidos,
-    SUM(p.valor) AS valor_total
-FROM pedidos p
-INNER JOIN clientes c ON p.id_cliente = c.id_cliente
-GROUP BY c.estado, p.status
-ORDER BY c.estado ASC, p.status DESC;
-
+    SUM(ip.quantidade * ip.preco_unitario) AS faturamento_estado,
+    COUNT(DISTINCT ped.id_pedido) AS total_pedidos_estado
+FROM clientes c
+INNER JOIN pedidos ped
+    ON c.id_cliente = ped.id_cliente
+INNER JOIN itens_pedido ip
+    ON ped.id_pedido = ip.id_pedido
+WHERE ped.status = 'pago'
+GROUP BY c.estado
+ORDER BY faturamento_estado DESC, c.estado ASC;
