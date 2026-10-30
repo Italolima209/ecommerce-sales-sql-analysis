@@ -48,14 +48,27 @@ WHERE NOT EXISTS (
 ORDER BY prod.id_produto ASC;
 
 
--- 4. Pedidos pagos que não possuem nenhum item associado
+-- 4. Pedidos que não possuem nenhum item associado
 SELECT
-    p.id_pedido,
-    p.status,
-    p.data_pedido
-FROM pedidos p
+    ped.id_pedido,
+    ped.status,
+    ped.data_pedido
+FROM pedidos ped
 LEFT JOIN itens_pedido ip
-    ON p.id_pedido = ip.id_pedido
-WHERE p.status = 'pago'
-  AND ip.id_pedido IS NULL
-ORDER BY p.id_pedido ASC;
+    ON ped.id_pedido = ip.id_pedido
+WHERE ip.id_pedido IS NULL
+ORDER BY ped.id_pedido ASC;
+
+
+-- 5. Pedidos realizados antes do cadastro do cliente
+SELECT
+    ped.id_pedido,
+    c.id_cliente,
+    c.nome,
+    c.data_cadastro,
+    ped.data_pedido
+FROM clientes c
+INNER JOIN pedidos ped
+    ON c.id_cliente = ped.id_cliente
+WHERE ped.data_pedido < c.data_cadastro
+ORDER BY ped.data_pedido ASC;
